@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using LoRDeckCodes;
 
 [System.Serializable]
 public class RegionsJSON
@@ -27,19 +28,22 @@ public class Region
     {
         for(int i = 0; i < cards.Count; ++i)
         {
-            if(cards[i].type == "Spell")
+            if (cards[i].cardCode.Length <= 7)
             {
-                spells.Add(cards[i]);
-            }
-            else
-            {
-                if(cards[i].supertype == "Champion")
+                if (cards[i].type == "Spell")
                 {
-                    champions.Add(cards[i]);
+                    spells.Add(cards[i]);
                 }
-                else
+                else if (cards[i].type == "Unit")
                 {
-                    units.Add(cards[i]);
+                    if (cards[i].supertype == "Champion")
+                    {
+                        champions.Add(cards[i]);
+                    }
+                    else
+                    {
+                        units.Add(cards[i]);
+                    }
                 }
             }
         }
@@ -62,6 +66,38 @@ public class Region
             allCards[i] = JsonUtility.ToJson(spells[a]);
         }
         return allCards;
+    }
+    
+    public CardCodeAndCount GetRandomCardAndAmount(bool hitMaxChampions, int champsRemaining, int cardsNeeded, out bool isChampion)
+    {
+        int randNum = Random.Range(0, (hitMaxChampions ? 2 : 3));
+        int randAmount = Random.Range(1, (cardsNeeded < 4 ? cardsNeeded : 4));
+        int randAmountChampions = Random.Range(1, (champsRemaining >= 4 ? 4 : champsRemaining));
+        CardCodeAndCount CCC = new CardCodeAndCount();
+        isChampion = false;
+        if (randNum == 0)
+        {
+            Card c = units[Random.Range(0, units.Count)];
+            Debug.Log(c.name + " " + randAmount);
+            CCC.CardCode = c.cardCode;
+            CCC.Count = randAmount;
+        }
+        else if(randNum == 1)
+        {
+            Card c = spells[Random.Range(0, spells.Count)];
+            Debug.Log(c.name + " " + randAmount);
+            CCC.CardCode = c.cardCode;
+            CCC.Count = randAmount;
+        }
+        else
+        {
+            Card c = champions[Random.Range(0, champions.Count)];
+            Debug.Log(c.name + " " + randAmountChampions);
+            CCC.CardCode = c.cardCode;
+            CCC.Count = randAmountChampions;
+            isChampion = true;
+        }
+        return CCC;
     }
 
     public override string ToString()
