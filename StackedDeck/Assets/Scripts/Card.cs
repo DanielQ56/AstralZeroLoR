@@ -68,7 +68,7 @@ public class Region
         return allCards;
     }
     
-    public CardCodeAndCount GetRandomCardAndAmount(bool hitMaxChampions, int champsRemaining, int cardsNeeded, out bool isChampion)
+    public CardCodeAndCount GetRandomCardAndAmount(bool hitMaxChampions, int champsRemaining, int cardsNeeded, out bool isChampion, out string name)
     {
         int randNum = Random.Range(0, (hitMaxChampions ? 2 : 3));
         int randAmount = Random.Range(1, (cardsNeeded < 4 ? cardsNeeded : 4));
@@ -78,21 +78,24 @@ public class Region
         if (randNum == 0)
         {
             Card c = units[Random.Range(0, units.Count)];
-            Debug.Log(c.name + " " + randAmount);
+            name = c.name;
+            //Debug.Log(c.name + " " + randAmount);
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmount;
         }
         else if(randNum == 1)
         {
             Card c = spells[Random.Range(0, spells.Count)];
-            Debug.Log(c.name + " " + randAmount);
+            name = c.name;
+            // Debug.Log(c.name + " " + randAmount);
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmount;
         }
         else
         {
             Card c = champions[Random.Range(0, champions.Count)];
-            Debug.Log(c.name + " " + randAmountChampions);
+            name = c.name;
+            // Debug.Log(c.name + " " + randAmountChampions);
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmountChampions;
             isChampion = true;

@@ -70,7 +70,7 @@ public class LoadJson
         string allCards = text.Trim(charsToTrim).Trim();
         allCards = allCards.Replace("},", "}},");
         string[] cards = allCards.Split(stringToSplit, System.StringSplitOptions.None);
-        Debug.Log(cards.Length);
+        //Debug.Log(cards.Length);
         return SortCards(cards);
     }
 
