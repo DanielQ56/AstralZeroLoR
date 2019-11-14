@@ -20,12 +20,14 @@ public class RegionsJSON
 [System.Serializable]
 public class Region
 {
+    public string name;
     public List<Card> units = new List<Card>();
     public List<Card> champions = new List<Card>();
     public List<Card> spells = new List<Card>();
 
-    public Region(List<Card> cards)
+    public Region(string n, List<Card> cards)
     {
+        name = n;
         for(int i = 0; i < cards.Count; ++i)
         {
             if (cards[i].cardCode.Length <= 7)
@@ -68,16 +70,17 @@ public class Region
         return allCards;
     }
     
-    public CardCodeAndCount GetRandomCardAndAmount(bool hitMaxChampions, int champsRemaining, int cardsNeeded, out bool isChampion, out string name)
+    public CardCodeAndCount GetRandomCardAndAmount(int champsRemaining, int cardsNeeded, out bool isChampion, out string name)
     {
-        int randNum = Random.Range(0, (hitMaxChampions ? 2 : 3));
-        int randAmount = Random.Range(1, (cardsNeeded < 4 ? cardsNeeded : 4));
-        int randAmountChampions = Random.Range(1, (champsRemaining >= 4 ? 4 : champsRemaining));
+        int randNum = Random.Range(0, (champsRemaining == 0 ? 2 : 3));
+        int randAmount = Random.Range(1, (cardsNeeded < 5 ? cardsNeeded : 4));
+        int randAmountChampions = Random.Range(1, (champsRemaining < cardsNeeded ? (champsRemaining < 5? champsRemaining : 4) : randAmount));
         CardCodeAndCount CCC = new CardCodeAndCount();
+        Card c;
         isChampion = false;
         if (randNum == 0)
         {
-            Card c = units[Random.Range(0, units.Count)];
+            c = units[Random.Range(0, units.Count)];
             name = c.name;
             //Debug.Log(c.name + " " + randAmount);
             CCC.CardCode = c.cardCode;
@@ -85,7 +88,7 @@ public class Region
         }
         else if(randNum == 1)
         {
-            Card c = spells[Random.Range(0, spells.Count)];
+            c = spells[Random.Range(0, spells.Count)];
             name = c.name;
             // Debug.Log(c.name + " " + randAmount);
             CCC.CardCode = c.cardCode;
@@ -93,7 +96,7 @@ public class Region
         }
         else
         {
-            Card c = champions[Random.Range(0, champions.Count)];
+            c = champions[Random.Range(0, champions.Count)];
             name = c.name;
             // Debug.Log(c.name + " " + randAmountChampions);
             CCC.CardCode = c.cardCode;
@@ -105,7 +108,8 @@ public class Region
 
     public override string ToString()
     {
-        return string.Format("Units (Not including champions: {0}, Spells: {1}, Champions: {2}", units.Count, spells.Count, champions.Count);
+        return name;
+        //return string.Format("Units (Not including champions: {0}, Spells: {1}, Champions: {2}", units.Count, spells.Count, champions.Count);
     }
 
 }

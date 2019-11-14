@@ -107,24 +107,24 @@ public class LoadJson
                     break;
             }
         }
-        Region dem = new Region(d);
-        Region fre = new Region(f);
-        Region ion = new Region(i);
-        Region nox = new Region(n);
-        Region pil = new Region(p);
-        Region sha = new Region(s);
+        Region dem = new Region("Demacia",  d);
+        Region fre = new Region("Freljord", f);
+        Region ion = new Region("Ionia", i);
+        Region nox = new Region("Noxus", n);
+        Region pil = new Region("Piltover", p);
+        Region sha = new Region("ShadowIsles", s);
         Region[] r = { dem, fre, ion, nox, pil, sha };
         return r;
     }
 
     static Region[] CreateRegions(string[][] allCards)
     {
-        Region dem = new Region(ConvertStringToCard(allCards[0]));
-        Region fre = new Region(ConvertStringToCard(allCards[1]));
-        Region ion = new Region(ConvertStringToCard(allCards[2]));
-        Region nox = new Region(ConvertStringToCard(allCards[3]));
-        Region pil = new Region(ConvertStringToCard(allCards[4]));
-        Region sha = new Region(ConvertStringToCard(allCards[5]));
+        Region dem = new Region("Demacia", ConvertStringToCard(allCards[0]));
+        Region fre = new Region("Freljord", ConvertStringToCard(allCards[1]));
+        Region ion = new Region("Ionia", ConvertStringToCard(allCards[2]));
+        Region nox = new Region("Noxus", ConvertStringToCard(allCards[3]));
+        Region pil = new Region("Piltover", ConvertStringToCard(allCards[4]));
+        Region sha = new Region("ShadowIsles", ConvertStringToCard(allCards[5]));
         Region[] r = { dem, fre, ion, nox, pil, sha };
         return r;
 

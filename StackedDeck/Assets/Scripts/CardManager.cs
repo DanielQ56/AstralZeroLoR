@@ -6,123 +6,186 @@ using System.Linq;
 
 public class CardManager : MonoBehaviour
 {
+    public static CardManager instance = null;
+
+    const int maxNumChampions = 6;
+
     Region[] allRegions;
 
     LoRDeckEncoder encoder;
 
+    List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
+    Dictionary<string, CardCodeAndCount> cardCodeAndAmount = new Dictionary<string, CardCodeAndCount>();
+    Dictionary<string, string> names = new Dictionary<string, string>();
+    int totalCardsFromR1;
+    int totalCardsFromR2;
+    Region r1;
+    Region r2;
 
     // Start is called before the first frame update
     void Awake()
     {
-        //LoadJson.DeleteCardsOnPath();
+        instance = this;
         allRegions = LoadJson.LoadResourceTextFile();
-        //for(int i = 0; i < allRegions.Length; ++i)
-        //{
-        //    Debug.Log(Utilities.IndexToRegion[i] + ":\n" + allRegions[i].ToString());
-        //}
         encoder = new LoRDeckEncoder();
     }
 
-    private void Start()
+    public void GenerateInfoForDeck(string region1, string region2, int numReg1, int numReg2)
     {
-        //GenerateRandomDeck();
+        GenerateRegions(region1, region2);
+        
+        GenerateAmountPerRegion(numReg1, numReg2);
+        Debug.Log(totalCardsFromR1 + " " + totalCardsFromR2);
+        Debug.Log(r1.ToString() + " " + r2.ToString());
+
+        cards.Clear();
+        cardCodeAndAmount.Clear();
+        names.Clear();
+        GenerateDeck();
+
     }
 
-    public void GenerateRandomDeck()
+    void GenerateAmountPerRegion(int numReg1, int numReg2)
     {
-        Region[] regions = new Region[2];
-        regions[0] = allRegions[Random.Range(0, 6)];
-        do
+        if(numReg1 == -1)
         {
-            regions[1] = allRegions[Random.Range(0, 6)];
+            totalCardsFromR1 = Random.Range(0, 41);
+            totalCardsFromR2 = 40 - totalCardsFromR1;
         }
-        while (regions[0] == regions[1]);
-        int totalCardsFromR1 = Random.Range(0, 41);
-        int totalCardsFromR2 = 40 - totalCardsFromR1;
-        Debug.Log(totalCardsFromR1 + " " + totalCardsFromR2);
+        else
+        {
+            totalCardsFromR1 = numReg1;
+            totalCardsFromR2 = numReg2;
+        }
+    }
+
+    void GenerateRegions(string region1, string region2)
+    {
+        if(region1 == "" && region2 == "")
+        {
+            r1 = allRegions[Random.Range(0, 6)];
+            do
+            {
+                r2 = allRegions[Random.Range(0, 6)];
+            } while (r1 == r2);
+        }
+        else if(region1 == "")
+        {
+            do
+            {
+                r1 = allRegions[Random.Range(0, 6)];
+            } while (r1 == r2);
+        }
+        else if(region2 == "" || region1 == region2)
+        {
+            do
+            {
+                r2 = allRegions[Random.Range(0, 6)];
+            } while (r1 == r2);
+        }
+        else
+        {
+            r1 = allRegions[Utilities.RegionToIndex[region1]];
+            r2 = allRegions[Utilities.RegionToIndex[region2]];
+        }
+    }
+
+    public void GenerateDeck()
+    {
         int numChampions = 0;
         int numR1 = 0;
         int numR2 = 0;
-        List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
-        Dictionary<string, int> cardCodeAndAmount = new Dictionary<string, int>();
         bool isChampion;
         CardCodeAndCount c;
-        bool added = false;
         string name;
-        while(numR1 + numR2 < 40)
+        while (numR1 + numR2 < 40)
         {
-            added = false;
             int index = Random.Range(0, 2);
             if (index == 0 && numR1 < totalCardsFromR1)
             {
-                do
+                while (true)
                 {
-                    c = regions[index].GetRandomCardAndAmount((numChampions >= 6), 6 - numChampions, totalCardsFromR1 - numR1, out isChampion, out name);
+                    c = r1.GetRandomCardAndAmount(maxNumChampions - numChampions, totalCardsFromR1 - numR1, out isChampion, out name);
                     if (cardCodeAndAmount.ContainsKey(c.CardCode))
                     {
-                        if (cardCodeAndAmount[c.CardCode] < 3)
+                        if (cardCodeAndAmount[c.CardCode].Count < 3)
                         {
-                            int remainingNum = 3 - cardCodeAndAmount[c.CardCode];
+                            //Debug.Log("BEFORE MOD: " + c.Count);
+                            int remainingNum = 3 - cardCodeAndAmount[c.CardCode].Count;
                             c.Count = (c.Count < remainingNum ? c.Count : remainingNum);
-                            cardCodeAndAmount[c.CardCode] += c.Count;
-                            added = true;
+                            cardCodeAndAmount[c.CardCode].Count += c.Count;
+                            //Debug.Log("AFTER MOD: " + c.Count);
+                            break;
                         }
+
                     }
                     else
                     {
-                        cardCodeAndAmount.Add(c.CardCode, c.Count);
-                        added = true;
+                        cardCodeAndAmount.Add(c.CardCode, c);
+                        //try
+                        //{
+                        //    names.Add(c.CardCode, name);
+                        //}
+                        //catch(System.ArgumentException)
+                        //{
+                        //    Debug.Log("BROKEN HERE " + name);
+                        //}
+                        break;
                     }
-                } while (!added);
-                //Debug.Log(name + " " + cardCodeAndAmount[c.CardCode]);
+                }
+                //Debug.Log("AFTER WHILE LOOP: " + c.Count);
                 if (isChampion)
                     numChampions += c.Count;
                 numR1 += c.Count;
-                
-            } 
-            else if(numR2 < totalCardsFromR2)
+
+            }
+            else if (numR2 < totalCardsFromR2)
             {
-                do
+                while (true)
                 {
-                    c = regions[index].GetRandomCardAndAmount((numChampions >= 6), 6 - numChampions, totalCardsFromR2 - numR2, out isChampion, out name);
+                    c = r2.GetRandomCardAndAmount(maxNumChampions - numChampions, totalCardsFromR2 - numR2, out isChampion, out name);
                     if (cardCodeAndAmount.ContainsKey(c.CardCode))
                     {
-                        if (cardCodeAndAmount[c.CardCode] < 3)
+                        if (cardCodeAndAmount[c.CardCode].Count < 3)
                         {
-                         
-                            int remainingNum = 3 - cardCodeAndAmount[c.CardCode];
+                            //.Log("BEFORE MOD: " + c.Count);
+                            int remainingNum = 3 - cardCodeAndAmount[c.CardCode].Count;
                             c.Count = (c.Count < remainingNum ? c.Count : remainingNum);
-                            cardCodeAndAmount[c.CardCode] += c.Count;
-                            added = true;
+                            cardCodeAndAmount[c.CardCode].Count += c.Count;
+                            ///Debug.Log("AFTER MOD: " + c.Count);
+                            break;
                         }
+
                     }
                     else
                     {
-                        cardCodeAndAmount.Add(c.CardCode, c.Count);
-                        added = true;
+                        //Debug.Log("ADDING CARD: " + c.Count);
+                        cardCodeAndAmount.Add(c.CardCode, c);
+                        //try
+                        //{
+                        //    names.Add(c.CardCode, name);
+                        //}
+                        //catch (System.ArgumentException)
+                        //{
+                        //    Debug.Log("BROKEN HERE " + name);
+                        //}
+                        break;
                     }
-                } while (!added);
-                //Debug.Log(name + " " + cardCodeAndAmount[c.CardCode]);
+                }
                 if (isChampion)
                     numChampions += c.Count;
                 numR2 += c.Count;
             }
         }
-        int sum = 0;
-        foreach (KeyValuePair<string, int> pair in cardCodeAndAmount)
+        foreach (KeyValuePair<string, CardCodeAndCount> pair in cardCodeAndAmount)
         {
-            CardCodeAndCount card = new CardCodeAndCount();
-            card.CardCode = pair.Key;
-            card.Count = pair.Value;
-            sum += pair.Value;
-            cards.Add(card);
+            //Debug.Log(names[pair.Key] + " " + pair.Value.Count);
+            cards.Add(pair.Value);
         }
         string code = LoRDeckEncoder.GetCodeFromDeck(cards);
         Debug.Log(code);
-        if(sum < 40)
-        {
-            Debug.Log("YIKES");
-        }
     }
 
 }
+
+
