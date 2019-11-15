@@ -24,6 +24,9 @@ public class Region
     public List<Card> units = new List<Card>();
     public List<Card> champions = new List<Card>();
     public List<Card> spells = new List<Card>();
+    public List<Card> Uunits = new List<Card>();
+    public List<Card> Uchampions = new List<Card>();
+    public List<Card> Uspells = new List<Card>();
 
     public Region(string n, List<Card> cards)
     {
@@ -104,6 +107,41 @@ public class Region
             isChampion = true;
         }
         return CCC;
+    }
+
+    public string GetAllCardsAsString()
+    {
+        string s = "";
+        foreach(Card c in units)
+        {
+            s += c.name + ",";
+        }
+        s += "|";
+        foreach(Card c in spells)
+        {
+            s += c.name + ",";
+        }
+        s += "|";
+        foreach(Card c in champions)
+        {
+            s += c.name + ",";
+        }
+        s += "&";
+        foreach (Card c in Uunits)
+        {
+            s += c.name + ",";
+        }
+        s += "|";
+        foreach (Card c in Uspells)
+        {
+            s += c.name + ",";
+        }
+        s += "|";
+        foreach (Card c in Uchampions)
+        {
+            s += c.name + ",";
+        }
+        return s;
     }
 
     public override string ToString()

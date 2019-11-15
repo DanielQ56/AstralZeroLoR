@@ -110,11 +110,9 @@ public class CardManager : MonoBehaviour
                     {
                         if (cardCodeAndAmount[c.CardCode].Count < 3)
                         {
-                            //Debug.Log("BEFORE MOD: " + c.Count);
                             int remainingNum = 3 - cardCodeAndAmount[c.CardCode].Count;
                             c.Count = (c.Count < remainingNum ? c.Count : remainingNum);
                             cardCodeAndAmount[c.CardCode].Count += c.Count;
-                            //Debug.Log("AFTER MOD: " + c.Count);
                             break;
                         }
 
@@ -122,18 +120,9 @@ public class CardManager : MonoBehaviour
                     else
                     {
                         cardCodeAndAmount.Add(c.CardCode, c);
-                        //try
-                        //{
-                        //    names.Add(c.CardCode, name);
-                        //}
-                        //catch(System.ArgumentException)
-                        //{
-                        //    Debug.Log("BROKEN HERE " + name);
-                        //}
                         break;
                     }
                 }
-                //Debug.Log("AFTER WHILE LOOP: " + c.Count);
                 if (isChampion)
                     numChampions += c.Count;
                 numR1 += c.Count;
@@ -148,27 +137,16 @@ public class CardManager : MonoBehaviour
                     {
                         if (cardCodeAndAmount[c.CardCode].Count < 3)
                         {
-                            //.Log("BEFORE MOD: " + c.Count);
                             int remainingNum = 3 - cardCodeAndAmount[c.CardCode].Count;
                             c.Count = (c.Count < remainingNum ? c.Count : remainingNum);
                             cardCodeAndAmount[c.CardCode].Count += c.Count;
-                            ///Debug.Log("AFTER MOD: " + c.Count);
                             break;
                         }
 
                     }
                     else
                     {
-                        //Debug.Log("ADDING CARD: " + c.Count);
                         cardCodeAndAmount.Add(c.CardCode, c);
-                        //try
-                        //{
-                        //    names.Add(c.CardCode, name);
-                        //}
-                        //catch (System.ArgumentException)
-                        //{
-                        //    Debug.Log("BROKEN HERE " + name);
-                        //}
                         break;
                     }
                 }
@@ -179,11 +157,16 @@ public class CardManager : MonoBehaviour
         }
         foreach (KeyValuePair<string, CardCodeAndCount> pair in cardCodeAndAmount)
         {
-            //Debug.Log(names[pair.Key] + " " + pair.Value.Count);
             cards.Add(pair.Value);
         }
         string code = LoRDeckEncoder.GetCodeFromDeck(cards);
         Debug.Log(code);
+    }
+
+
+    public string[] GetAllCardsAsStrings()
+    {
+        return LoadJson.ConvertCardsToString(allRegions);
     }
 
 }

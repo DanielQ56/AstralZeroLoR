@@ -27,6 +27,16 @@ public class LoadJson
         }
     }
 
+    public static string[] ConvertCardsToString(Region[] regions)
+    {
+        string[] s = new string[6];
+        for(int i = 0; i < 6; ++i)
+        {
+            s[i] = regions[i].GetAllCardsAsString();
+        }
+        return s;
+    }
+
     static Region[] AllCardsByRegion()
     {
         string p = Application.persistentDataPath + path;

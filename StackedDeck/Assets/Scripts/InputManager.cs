@@ -42,7 +42,7 @@ public class InputManager : MonoBehaviour
     public void RegionTwo(string region)
     {
         r2 = (r2 == region ? "" : region);
-        Debug.Log("REGION 2 IS: " + region);
+        Debug.Log("REGION 2 IS: " + r2);
     }
 
     public void GenerateDeck()
