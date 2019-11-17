@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 using LoRDeckCodes;
 
+//This is the class that I use to send the Web Requests to update the datbase
 [System.Serializable]
 public class PlayerData
 {
@@ -30,7 +31,7 @@ public class PlayerData
 }
 
 
-
+//I think this is used in LoadJSON when we already have a datapath set up 
 [System.Serializable]
 public class RegionsJSON
 {
@@ -43,7 +44,7 @@ public class RegionsJSON
     
 }
 
-
+//Holds all the cards belonging to that Region for easy access
 [System.Serializable]
 public class Region
 {
@@ -51,19 +52,23 @@ public class Region
     public List<Card> units = new List<Card>();
     public List<Card> champions = new List<Card>();
     public List<Card> spells = new List<Card>();
-    public List<Card> Uunits = new List<Card>();
-    public List<Card> Uchampions = new List<Card>();
-    public List<Card> Uspells = new List<Card>();
+    public Dictionary<string, int> CountOfAllCards = new Dictionary<string, int>();
 
-    public Region(string n, List<Card> cards)
+    //Constructor
+    public Region(string n, List<Card> cards, string cardsWithCount = "")
     {
-        name = n;
-        for(int i = 0; i < cards.Count; ++i)
+        bool loadPlayerData = (cardsWithCount != "");
+        if(loadPlayerData)
+        {
+            SetupCardCountDictionary(cardsWithCount);
+        }
+        for (int i = 0; i < cards.Count; ++i)
         {
             if (cards[i].cardCode.Length <= 7)
             {
                 if (cards[i].type == "Spell")
                 {
+
                     spells.Add(cards[i]);
                 }
                 else if (cards[i].type == "Unit")
@@ -78,9 +83,24 @@ public class Region
                     }
                 }
             }
+            if(!loadPlayerData)
+                CountOfAllCards.Add(cards[i].name, 3);
+        }
+        
+    }
+
+    //This is to set up the dictionary that holds how many of each card the player has. 0 if the player does not own the card
+    void SetupCardCountDictionary(string cards)
+    {
+        string cardstring = cards.Trim(',');
+        string[] allCards = cardstring.Split(',');
+        foreach(string s in allCards)
+        {
+            CountOfAllCards.Add(s.Substring(1), int.Parse(s.Substring(0,1)));
         }
     }
 
+    //Used by loadJSON to store cards onto the data path. Kinda redundent might clean this up later
     public string[] AllCardsInRegion()
     {
         string[] allCards = new string[units.Count + champions.Count + spells.Count];
@@ -100,7 +120,8 @@ public class Region
         return allCards;
     }
     
-    public CardCodeAndCount GetRandomCardAndAmount(int champsRemaining, int cardsNeeded, out bool isChampion, out string name)
+    //Retrieves a random number of a random card to add to the deck. It Outs different variables needed in UserManager to determine whether or not to add them to the deck
+    public CardCodeAndCount GetRandomCardAndAmount(int champsRemaining, int cardsNeeded, out bool isChampion, out string name, out int numOwned)
     {
         int randNum = Random.Range(0, (champsRemaining == 0 ? 2 : 3));
         int randAmount = Random.Range(1, (cardsNeeded < 5 ? cardsNeeded : 4));
@@ -114,6 +135,7 @@ public class Region
             name = c.name;
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmount;
+            numOwned = CountOfAllCards[c.name];
         }
         else if(randNum == 1)
         {
@@ -121,6 +143,7 @@ public class Region
             name = c.name;
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmount;
+            numOwned = CountOfAllCards[c.name];
         }
         else
         {
@@ -129,41 +152,18 @@ public class Region
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmountChampions;
             isChampion = true;
+            numOwned = CountOfAllCards[c.name];
         }
         return CCC;
     }
 
+    //Used for saving info onto database
     public string GetAllCardsAsString()
     {
         string s = "";
-        foreach(Card c in units)
+        foreach(KeyValuePair<string, int> pair in CountOfAllCards)
         {
-            s += c.name + ",";
-        }
-        s += "|";
-        foreach(Card c in spells)
-        {
-            s += c.name + ",";
-        }
-        s += "|";
-        foreach(Card c in champions)
-        {
-            s += c.name + ",";
-        }
-        s += "&";
-        foreach (Card c in Uunits)
-        {
-            s += c.name + ",";
-        }
-        s += "|";
-        foreach (Card c in Uspells)
-        {
-            s += c.name + ",";
-        }
-        s += "|";
-        foreach (Card c in Uchampions)
-        {
-            s += c.name + ",";
+            s += (pair.Value.ToString() + pair.Key) + ",";
         }
         return s;
     }
@@ -175,6 +175,7 @@ public class Region
 
 }
 
+//The Card class that JSONUtility uses to parse the contents of the JSON file
 [System.Serializable]
 public class Card
 {

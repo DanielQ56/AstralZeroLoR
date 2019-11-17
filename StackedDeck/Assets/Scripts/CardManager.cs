@@ -26,10 +26,16 @@ public class CardManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        allRegions = LoadJson.LoadResourceTextFile();
         encoder = new LoRDeckEncoder();
     }
 
+    //Loads all cards from the LoadJSON class into the respective regions
+    public void LoadAllCards(PlayerData player = null)
+    {
+        allRegions = LoadJson.LoadResourceTextFile(player);
+    }
+
+    #region Actual Deck Generation Methods
     public string GenerateInfoForDeck(string region1, string region2, int numReg1, int numReg2)
     {
         r1 = allRegions[Utilities.RegionToIndex[region1]];
@@ -52,6 +58,7 @@ public class CardManager : MonoBehaviour
         bool isChampion;
         CardCodeAndCount c;
         string name;
+        int numOwned;
         while (numR1 + numR2 < 40)
         {
             int index = Random.Range(0, 2);
@@ -59,12 +66,12 @@ public class CardManager : MonoBehaviour
             {
                 while (true)
                 {
-                    c = r1.GetRandomCardAndAmount(maxNumChampions - numChampions, totalCardsFromR1 - numR1, out isChampion, out name);
+                    c = r1.GetRandomCardAndAmount(maxNumChampions - numChampions, totalCardsFromR1 - numR1, out isChampion, out name, out numOwned);
                     if (cardCodeAndAmount.ContainsKey(c.CardCode))
                     {
-                        if (cardCodeAndAmount[c.CardCode].Count < 3)
+                        if (cardCodeAndAmount[c.CardCode].Count < numOwned) //Assuming the max number of cards owned is 3 since you can only have max 3 of each card in a deck
                         {
-                            int remainingNum = 3 - cardCodeAndAmount[c.CardCode].Count;
+                            int remainingNum = numOwned - cardCodeAndAmount[c.CardCode].Count;
                             c.Count = (c.Count < remainingNum ? c.Count : remainingNum);
                             cardCodeAndAmount[c.CardCode].Count += c.Count;
                             break;
@@ -86,12 +93,12 @@ public class CardManager : MonoBehaviour
             {
                 while (true)
                 {
-                    c = r2.GetRandomCardAndAmount(maxNumChampions - numChampions, totalCardsFromR2 - numR2, out isChampion, out name);
+                    c = r2.GetRandomCardAndAmount(maxNumChampions - numChampions, totalCardsFromR2 - numR2, out isChampion, out name, out numOwned);
                     if (cardCodeAndAmount.ContainsKey(c.CardCode))
                     {
-                        if (cardCodeAndAmount[c.CardCode].Count < 3)
+                        if (cardCodeAndAmount[c.CardCode].Count < numOwned)
                         {
-                            int remainingNum = 3 - cardCodeAndAmount[c.CardCode].Count;
+                            int remainingNum = numOwned - cardCodeAndAmount[c.CardCode].Count;
                             c.Count = (c.Count < remainingNum ? c.Count : remainingNum);
                             cardCodeAndAmount[c.CardCode].Count += c.Count;
                             break;
@@ -116,7 +123,9 @@ public class CardManager : MonoBehaviour
         return LoRDeckEncoder.GetCodeFromDeck(cards);
     }
 
+    #endregion
 
+    //Used for saving the player's cards onto database
     public string[] GetAllCardsAsStrings()
     {
         return LoadJson.ConvertCardsToString(allRegions);

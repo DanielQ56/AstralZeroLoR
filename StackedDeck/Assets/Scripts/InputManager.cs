@@ -25,6 +25,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    #region Autofilling in Number Of Cards
     public void UpdateOtherNumber(int num)
     {
         if(num == 1)
@@ -36,7 +37,9 @@ public class InputManager : MonoBehaviour
             numInRegion1.text = (numInRegion2.text == "" ? "" : (40 - int.Parse(numInRegion2.text)).ToString());
         }
     }
+    #endregion
 
+    #region Handling displaying of region selected
     public void RegionOne(string region)
     {
         r1 = (r1 == region ? "" : region);
@@ -48,11 +51,19 @@ public class InputManager : MonoBehaviour
         r2 = (r2 == region ? "" : region);
         region2.text = r2;
     }
+    #endregion
 
+    #region Deck Generation when the Generate button is clicked
     public void GenerateDeck()
     {
         CheckForEmptyFields();
         deckCode.text = CardManager.instance.GenerateInfoForDeck(r1, r2, int.Parse(numInRegion1.text), (int.Parse(numInRegion2.text)));
+    }
+
+    void CheckForEmptyFields()
+    {
+        GenerateAmountPerRegion();
+        GenerateRegions();
     }
 
     public void RandomizeValues()
@@ -64,15 +75,6 @@ public class InputManager : MonoBehaviour
         GenerateAmountPerRegion();
         GenerateRegions();
     }
-
-
-    void CheckForEmptyFields()
-    {
-        GenerateAmountPerRegion();
-        GenerateRegions();
-    }
-
-
 
     void GenerateAmountPerRegion()
     {
@@ -108,7 +110,10 @@ public class InputManager : MonoBehaviour
         }
         Debug.Log(r1 + " " + r2);
     }
+    #endregion
 
+
+    //Function that copies the deck code to clipboard for easy copy paste
     public void CopyToClipBoard()
     {
         Utilities.CopyToClipBoard(deckCode.text);
