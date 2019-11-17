@@ -53,6 +53,7 @@ public class Region
     public List<Card> champions = new List<Card>();
     public List<Card> spells = new List<Card>();
     public Dictionary<string, int> CountOfAllCards = new Dictionary<string, int>();
+    public Dictionary<string, string> CardCodeToName = new Dictionary<string, string>();
 
     //Constructor
     public Region(string n, List<Card> cards, string cardsWithCount = "")
@@ -64,6 +65,7 @@ public class Region
         }
         for (int i = 0; i < cards.Count; ++i)
         {
+            cards[i].name = cards[i].name.Replace(",", string.Empty);
             if (cards[i].cardCode.Length <= 7)
             {
                 if (cards[i].type == "Spell")
@@ -83,6 +85,7 @@ public class Region
                     }
                 }
             }
+            CardCodeToName.Add(cards[i].cardCode, cards[i].name);
             if(!loadPlayerData)
                 CountOfAllCards.Add(cards[i].name, 3);
         }
@@ -166,6 +169,33 @@ public class Region
             s += (pair.Value.ToString() + pair.Key) + ",";
         }
         return s;
+    }
+
+    //Updates the amount of a certain card
+    public bool UpdateCardAmount(string code, int amount)
+    {
+        if (CardCodeToName.ContainsKey(code))
+        {
+            if (CountOfAllCards.ContainsKey(CardCodeToName[code]))
+            {
+                Debug.Log(CardCodeToName[code] + " " + amount);
+                CountOfAllCards[CardCodeToName[code]] = amount;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int NumCopiesOfCard(string code)
+    {
+        if (CardCodeToName.ContainsKey(code))
+        {
+            if (CountOfAllCards.ContainsKey(CardCodeToName[code]))
+            {
+                return CountOfAllCards[CardCodeToName[code]];
+            }
+        }
+        return -1;
     }
 
     public override string ToString()

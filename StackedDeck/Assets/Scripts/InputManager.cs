@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using LoRDeckCodes;
 
 public class InputManager : MonoBehaviour
 {
@@ -12,10 +13,12 @@ public class InputManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI region1;
     [SerializeField] TextMeshProUGUI region2;
     [SerializeField] TextMeshProUGUI deckCode;
+    [SerializeField] CardPanel panel;
 
     string r1 = "";
     string r2 = "";
-    
+
+    List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
 
     private void Awake()
     {
@@ -57,7 +60,8 @@ public class InputManager : MonoBehaviour
     public void GenerateDeck()
     {
         CheckForEmptyFields();
-        deckCode.text = CardManager.instance.GenerateInfoForDeck(r1, r2, int.Parse(numInRegion1.text), (int.Parse(numInRegion2.text)));
+        cards = CardManager.instance.GenerateInfoForDeck(r1, r2, int.Parse(numInRegion1.text), (int.Parse(numInRegion2.text)));
+        deckCode.text = LoRDeckEncoder.GetCodeFromDeck(cards);
     }
 
     void CheckForEmptyFields()
@@ -112,6 +116,14 @@ public class InputManager : MonoBehaviour
     }
     #endregion
 
+    public void DisplayCardsInDeck()
+    {
+        if(cards.Count > 0)
+        {
+            panel.gameObject.SetActive(true);
+            panel.Setup(cards);
+        }
+    }
 
     //Function that copies the deck code to clipboard for easy copy paste
     public void CopyToClipBoard()

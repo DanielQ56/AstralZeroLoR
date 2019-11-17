@@ -12,8 +12,6 @@ public class CardManager : MonoBehaviour
 
     Region[] allRegions;
 
-    LoRDeckEncoder encoder;
-
     List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
     Dictionary<string, CardCodeAndCount> cardCodeAndAmount = new Dictionary<string, CardCodeAndCount>();
     Dictionary<string, string> names = new Dictionary<string, string>();
@@ -26,7 +24,6 @@ public class CardManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        encoder = new LoRDeckEncoder();
     }
 
     //Loads all cards from the LoadJSON class into the respective regions
@@ -36,7 +33,7 @@ public class CardManager : MonoBehaviour
     }
 
     #region Actual Deck Generation Methods
-    public string GenerateInfoForDeck(string region1, string region2, int numReg1, int numReg2)
+    public List<CardCodeAndCount> GenerateInfoForDeck(string region1, string region2, int numReg1, int numReg2)
     {
         r1 = allRegions[Utilities.RegionToIndex[region1]];
         r2= allRegions[Utilities.RegionToIndex[region2]];
@@ -50,7 +47,7 @@ public class CardManager : MonoBehaviour
 
     }
 
-    public string GenerateDeck()
+    List<CardCodeAndCount> GenerateDeck()
     {
         int numChampions = 0;
         int numR1 = 0;
@@ -120,10 +117,38 @@ public class CardManager : MonoBehaviour
         {
             cards.Add(pair.Value);
         }
-        return LoRDeckEncoder.GetCodeFromDeck(cards);
+        return cards;
     }
 
     #endregion
+
+    public void UpdateAmountOfCard(string cardCode, int amount)
+    {
+        bool shouldUpdate = false;
+        foreach(Region r in allRegions)
+        {
+            if(r.UpdateCardAmount(cardCode, amount))
+            {
+                shouldUpdate = true;
+            }
+        }
+        if (shouldUpdate)
+            UserManager.instance.UpdateExistingUser();
+    }
+
+    public int GetNumCopiesOfCard(string cardCode)
+    {
+        int c = -1;
+        foreach (Region r in allRegions)
+        {
+            c = r.NumCopiesOfCard(cardCode);
+            if (c >= 0)
+            {
+                return c;
+            }
+        }
+        return c;
+    }
 
     //Used for saving the player's cards onto database
     public string[] GetAllCardsAsStrings()

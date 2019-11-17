@@ -9,6 +9,7 @@ public class UserManager : MonoBehaviour
     #region URL's for Web Requests
     private const string RegisterNewUser = "https://shielded-journey-60422.herokuapp.com/user_create";
     private const string GetUser = "https://shielded-journey-60422.herokuapp.com/users/";
+    private const string UpdateUser = "https://shielded-journey-60422.herokuapp.com/user_update";
     #endregion
 
 
@@ -24,7 +25,7 @@ public class UserManager : MonoBehaviour
     [SerializeField] TMP_InputField newPassword;
     #endregion
 
-    PlayerData player;
+    public PlayerData player;
 
     private void Awake()
     {
@@ -35,6 +36,8 @@ public class UserManager : MonoBehaviour
     {
         ResetInput();
         inputPanel.SetActive(false);
+        player = null;
+        CardManager.instance.LoadAllCards();
     }
     #region New User
     public void CreateNewUser()
@@ -46,7 +49,7 @@ public class UserManager : MonoBehaviour
     IEnumerator NewUser()
     {
         char[] charsToTrim = new char[] { '[', ']' };
-        string getUserURL = GetUser + string.Format("{0}/{1}", username.text, password.text);
+        string getUserURL = GetUser + string.Format("{0}/{1}", newUsername.text, newPassword.text);
         using (UnityWebRequest newUser = UnityWebRequest.Get(getUserURL))
         {
             newUser.chunkedTransfer = false;
@@ -62,14 +65,15 @@ public class UserManager : MonoBehaviour
             else if (newUser.downloadHandler.text != "[]")
             {
                 ErrorOccurred("You Already Have an Existing Account!");
+                Debug.Log(newUser.downloadHandler.text);
                 yield break;
             }
         }
         CardManager.instance.LoadAllCards();
         string[] allCards = CardManager.instance.GetAllCardsAsStrings();
         WWWForm form = new WWWForm();
-        form.AddField("id", username.text);
-        form.AddField("password", password.text);
+        form.AddField("id", newUsername.text);
+        form.AddField("password", newPassword.text);
         for (int i = 0; i < allCards.Length; ++i)
         {
             form.AddField("r" + (i + 1).ToString(), allCards[i]);
@@ -141,12 +145,64 @@ public class UserManager : MonoBehaviour
     }
     #endregion
 
+    #region Update Existing User
+    public void UpdateExistingUser()
+    {
+        if(player != null)
+        {
+            Debug.Log("Updating");
+            StartCoroutine(update());
+        }
+        else
+        {
+            Debug.Log("You can't do that!");
+        }
+    }
+
+    IEnumerator update()
+    {
+        string[] allCards = CardManager.instance.GetAllCardsAsStrings();
+        WWWForm form = new WWWForm();
+        form.AddField("id", player.id);
+        form.AddField("password", player.password);
+        for (int i = 0; i < allCards.Length; ++i)
+        {
+            form.AddField("r" + (i + 1).ToString(), allCards[i]);
+        }
+        using (UnityWebRequest updateUser = UnityWebRequest.Post(UpdateUser, form))
+        {
+            updateUser.chunkedTransfer = false;
+            UnityWebRequestAsyncOperation request = updateUser.SendWebRequest();
+            while (!request.isDone)
+            {
+                yield return null;
+            }
+            if (updateUser.responseCode == 500)
+            {
+                ErrorOccurred("Unexpected Error Occurred");
+            }
+            else
+            {
+                Debug.Log("Updated successfully");
+            }
+        }
+    }
+
+    #endregion
+
+    public void BackToMenu()
+    {
+        inputPanel.SetActive(true);
+        player = null;
+    }
+
     #region Helper Functions
     bool CheckForEmptyInput(TMP_InputField user, TMP_InputField pass)
     {
         if (user.text == "" || pass.text == "")
         {
             ErrorOccurred("Username and Password cannot be empty");
+            return true;
         }
         return false;
     }
