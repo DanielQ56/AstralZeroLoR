@@ -5,6 +5,33 @@ using System.Linq;
 using LoRDeckCodes;
 
 [System.Serializable]
+public class PlayerData
+{
+    public string id;
+    public string password;
+    public string r1;
+    public string r2;
+    public string r3;
+    public string r4;
+    public string r5;
+    public string r6;
+
+    public PlayerData(string i, string pass, string R1, string R2, string R3, string R4, string R5, string R6)
+    {
+        id = i;
+        password = pass;
+        r1 = R1;
+        r2 = R2;
+        r3 = R3;
+        r4 = R4;
+        r5 = R5;
+        r6 = R6;
+    }
+}
+
+
+
+[System.Serializable]
 public class RegionsJSON
 {
     public string[][] AllCardsByRegion;
@@ -85,7 +112,6 @@ public class Region
         {
             c = units[Random.Range(0, units.Count)];
             name = c.name;
-            //Debug.Log(c.name + " " + randAmount);
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmount;
         }
@@ -93,7 +119,6 @@ public class Region
         {
             c = spells[Random.Range(0, spells.Count)];
             name = c.name;
-            // Debug.Log(c.name + " " + randAmount);
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmount;
         }
@@ -101,7 +126,6 @@ public class Region
         {
             c = champions[Random.Range(0, champions.Count)];
             name = c.name;
-            // Debug.Log(c.name + " " + randAmountChampions);
             CCC.CardCode = c.cardCode;
             CCC.Count = randAmountChampions;
             isChampion = true;
@@ -147,7 +171,6 @@ public class Region
     public override string ToString()
     {
         return name;
-        //return string.Format("Units (Not including champions: {0}, Spells: {1}, Champions: {2}", units.Count, spells.Count, champions.Count);
     }
 
 }
@@ -178,10 +201,6 @@ public class Card
     public string type;
     public string collectible;
 
-    public override string ToString()
-    {
-        return name + " " + cardCode + " " + type;
-    }
 }
 
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Utilities
+public static class Utilities
 {
     public static Dictionary<string, int> RegionToIndex = new Dictionary<string, int>
     {
@@ -25,4 +25,12 @@ public class Utilities
         {5, "ShadowIsles"},
         {-1, "" }
     };
+
+    public static void CopyToClipBoard(this string s) //Taken from answers.unity.questions
+    {
+        TextEditor te = new TextEditor();
+        te.text = s;
+        te.SelectAll();
+        te.Copy();
+    }
 }

@@ -9,9 +9,13 @@ public class InputManager : MonoBehaviour
     public static InputManager instance = null;
     [SerializeField] TMP_InputField numInRegion1;
     [SerializeField] TMP_InputField numInRegion2;
+    [SerializeField] TextMeshProUGUI region1;
+    [SerializeField] TextMeshProUGUI region2;
+    [SerializeField] TextMeshProUGUI deckCode;
 
     string r1 = "";
     string r2 = "";
+    
 
     private void Awake()
     {
@@ -36,17 +40,77 @@ public class InputManager : MonoBehaviour
     public void RegionOne(string region)
     {
         r1 = (r1 == region ? "" : region);
-        Debug.Log("REGION 1 IS: " + r1);
+        region1.text = r1;
     }
 
     public void RegionTwo(string region)
     {
         r2 = (r2 == region ? "" : region);
-        Debug.Log("REGION 2 IS: " + r2);
+        region2.text = r2;
     }
 
     public void GenerateDeck()
     {
-        CardManager.instance.GenerateInfoForDeck(r1, r2, (numInRegion1.text == "" ? -1 : int.Parse(numInRegion1.text)), (numInRegion2.text == "" ? -1 : int.Parse(numInRegion2.text)));
+        CheckForEmptyFields();
+        deckCode.text = CardManager.instance.GenerateInfoForDeck(r1, r2, int.Parse(numInRegion1.text), (int.Parse(numInRegion2.text)));
+    }
+
+    public void RandomizeValues()
+    {
+        r1 = "";
+        r2 = "";
+        numInRegion1.text = "";
+        numInRegion2.text = "";
+        GenerateAmountPerRegion();
+        GenerateRegions();
+    }
+
+
+    void CheckForEmptyFields()
+    {
+        GenerateAmountPerRegion();
+        GenerateRegions();
+    }
+
+
+
+    void GenerateAmountPerRegion()
+    {
+        if (numInRegion1.text == "")
+        {
+            numInRegion1.text = Random.Range(0, 41).ToString();
+        }
+    }
+
+    void GenerateRegions()
+    {
+        if (r1 == "" && r2 == "")
+        {
+            RegionOne(Utilities.IndexToRegion[Random.Range(0, 6)]);
+            do
+            {
+                RegionTwo(Utilities.IndexToRegion[Random.Range(0, 6)]);
+            } while (r1 == r2);
+        }
+        else if (r1 == "")
+        {
+            do
+            {
+                RegionOne(Utilities.IndexToRegion[Random.Range(0, 6)]);
+            } while (r1 == r2);
+        }
+        else if (r2 == "")
+        {
+            do
+            {
+                RegionTwo(Utilities.IndexToRegion[Random.Range(0, 6)]);
+            } while (r1 == r2);
+        }
+        Debug.Log(r1 + " " + r2);
+    }
+
+    public void CopyToClipBoard()
+    {
+        Utilities.CopyToClipBoard(deckCode.text);
     }
 }

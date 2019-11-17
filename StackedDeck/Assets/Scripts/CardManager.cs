@@ -30,67 +30,21 @@ public class CardManager : MonoBehaviour
         encoder = new LoRDeckEncoder();
     }
 
-    public void GenerateInfoForDeck(string region1, string region2, int numReg1, int numReg2)
+    public string GenerateInfoForDeck(string region1, string region2, int numReg1, int numReg2)
     {
-        GenerateRegions(region1, region2);
-        
-        GenerateAmountPerRegion(numReg1, numReg2);
-        Debug.Log(totalCardsFromR1 + " " + totalCardsFromR2);
-        Debug.Log(r1.ToString() + " " + r2.ToString());
+        r1 = allRegions[Utilities.RegionToIndex[region1]];
+        r2= allRegions[Utilities.RegionToIndex[region2]];
+        totalCardsFromR1 = numReg1;
+        totalCardsFromR2 = numReg2;
 
         cards.Clear();
         cardCodeAndAmount.Clear();
         names.Clear();
-        GenerateDeck();
+        return GenerateDeck();
 
     }
 
-    void GenerateAmountPerRegion(int numReg1, int numReg2)
-    {
-        if(numReg1 == -1)
-        {
-            totalCardsFromR1 = Random.Range(0, 41);
-            totalCardsFromR2 = 40 - totalCardsFromR1;
-        }
-        else
-        {
-            totalCardsFromR1 = numReg1;
-            totalCardsFromR2 = numReg2;
-        }
-    }
-
-    void GenerateRegions(string region1, string region2)
-    {
-        if(region1 == "" && region2 == "")
-        {
-            r1 = allRegions[Random.Range(0, 6)];
-            do
-            {
-                r2 = allRegions[Random.Range(0, 6)];
-            } while (r1 == r2);
-        }
-        else if(region1 == "")
-        {
-            do
-            {
-                r1 = allRegions[Random.Range(0, 6)];
-            } while (r1 == r2);
-        }
-        else if(region2 == "" || region1 == region2)
-        {
-            do
-            {
-                r2 = allRegions[Random.Range(0, 6)];
-            } while (r1 == r2);
-        }
-        else
-        {
-            r1 = allRegions[Utilities.RegionToIndex[region1]];
-            r2 = allRegions[Utilities.RegionToIndex[region2]];
-        }
-    }
-
-    public void GenerateDeck()
+    public string GenerateDeck()
     {
         int numChampions = 0;
         int numR1 = 0;
@@ -159,8 +113,7 @@ public class CardManager : MonoBehaviour
         {
             cards.Add(pair.Value);
         }
-        string code = LoRDeckEncoder.GetCodeFromDeck(cards);
-        Debug.Log(code);
+        return LoRDeckEncoder.GetCodeFromDeck(cards);
     }
 
 
