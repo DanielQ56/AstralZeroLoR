@@ -14,6 +14,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI region2;
     [SerializeField] TextMeshProUGUI deckCode;
     [SerializeField] CardPanel panel;
+    [SerializeField] GameObject update;
 
     string r1 = "";
     string r2 = "";
@@ -116,6 +117,7 @@ public class InputManager : MonoBehaviour
     }
     #endregion
 
+    //Function called when the View deck button is pressed. Preps all the cards that were generated
     public void DisplayCardsInDeck()
     {
         if(cards.Count > 0)
@@ -124,6 +126,30 @@ public class InputManager : MonoBehaviour
             panel.Setup(cards);
         }
     }
+
+    public void ClearAllEntries()
+    {
+        r1 = "";
+        r2 = "";
+        region1.text = r1;
+        region2.text = r2;
+        numInRegion1.text = "";
+        numInRegion2.text = "";
+        deckCode.text = "";
+    }
+
+    public void ShouldAllowUpdate()
+    {
+        if(UserManager.instance.player == null)
+        {
+            update.SetActive(false);
+        }
+        else
+        {
+            update.SetActive(true);
+        }
+    }
+
 
     //Function that copies the deck code to clipboard for easy copy paste
     public void CopyToClipBoard()

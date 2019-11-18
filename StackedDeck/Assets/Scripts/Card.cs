@@ -4,6 +4,14 @@ using UnityEngine;
 using System.Linq;
 using LoRDeckCodes;
 
+[System.Serializable] 
+public enum TypeOfCard
+{
+    Spell,
+    Unit,
+    Champion
+}
+
 //This is the class that I use to send the Web Requests to update the datbase
 [System.Serializable]
 public class PlayerData
@@ -97,9 +105,11 @@ public class Region
     {
         string cardstring = cards.Trim(',');
         string[] allCards = cardstring.Split(',');
+        int amount;
         foreach(string s in allCards)
         {
-            CountOfAllCards.Add(s.Substring(1), int.Parse(s.Substring(0,1)));
+            amount = int.Parse(s.Substring(0, 1));
+            CountOfAllCards.Add(s.Substring(1), amount);
         }
     }
 
@@ -196,6 +206,51 @@ public class Region
             }
         }
         return -1;
+    }
+
+    public List<CardCodeAndCount> CardsWithName(string name, TypeOfCard type)
+    {
+        List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
+        switch(type)
+        {
+            case TypeOfCard.Champion:
+                foreach(Card c in champions)
+                {
+                    if(c.name.Contains(name))
+                    {
+                        CardCodeAndCount card = new CardCodeAndCount();
+                        card.CardCode = c.cardCode;
+                        card.Count = CountOfAllCards[c.name];
+                        cards.Add(card);
+                    }
+                }
+                break;
+            case TypeOfCard.Spell:
+                foreach (Card c in spells)
+                {
+                    if (c.name.Contains(name))
+                    {
+                        CardCodeAndCount card = new CardCodeAndCount();
+                        card.CardCode = c.cardCode;
+                        card.Count = CountOfAllCards[c.name];
+                        cards.Add(card);
+                    }
+                }
+                break;
+            case TypeOfCard.Unit:
+                foreach (Card c in units)
+                {
+                    if (c.name.Contains(name))
+                    {
+                        CardCodeAndCount card = new CardCodeAndCount();
+                        card.CardCode = c.cardCode;
+                        card.Count = CountOfAllCards[c.name];
+                        cards.Add(card);
+                    }
+                }
+                break;
+        }
+        return cards;
     }
 
     public override string ToString()

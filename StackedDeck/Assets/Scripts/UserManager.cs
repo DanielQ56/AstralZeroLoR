@@ -35,8 +35,9 @@ public class UserManager : MonoBehaviour
     public void Guest()
     {
         ResetInput();
-        inputPanel.SetActive(false);
         player = null;
+        InputManager.instance.ShouldAllowUpdate();
+        inputPanel.SetActive(false);
         CardManager.instance.LoadAllCards();
     }
     #region New User
@@ -95,6 +96,7 @@ public class UserManager : MonoBehaviour
                 Debug.Log("User Created Succesfully!");
                 CreateNewPlayer(allCards);
                 ResetInput();
+                InputManager.instance.ShouldAllowUpdate();
                 inputPanel.SetActive(false);
             }
         }
@@ -139,6 +141,7 @@ public class UserManager : MonoBehaviour
                 player = JsonUtility.FromJson<PlayerData>(newUser.downloadHandler.text.Trim().Trim(charsToTrim));
                 CardManager.instance.LoadAllCards(player);
                 ResetInput();
+                InputManager.instance.ShouldAllowUpdate();
                 inputPanel.SetActive(false);
             }
         }
@@ -192,6 +195,7 @@ public class UserManager : MonoBehaviour
 
     public void BackToMenu()
     {
+        InputManager.instance.ClearAllEntries();
         inputPanel.SetActive(true);
         player = null;
     }

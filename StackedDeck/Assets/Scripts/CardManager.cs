@@ -77,8 +77,12 @@ public class CardManager : MonoBehaviour
                     }
                     else
                     {
-                        cardCodeAndAmount.Add(c.CardCode, c);
-                        break;
+                        if (numOwned > 0)
+                        {
+                            c.Count = (c.Count <= numOwned ? c.Count : numOwned);
+                            cardCodeAndAmount.Add(c.CardCode, c);
+                            break;
+                        }
                     }
                 }
                 if (isChampion)
@@ -104,8 +108,12 @@ public class CardManager : MonoBehaviour
                     }
                     else
                     {
-                        cardCodeAndAmount.Add(c.CardCode, c);
-                        break;
+                        if (numOwned > 0)
+                        {
+                            c.Count = (c.Count <= numOwned ? c.Count : numOwned);
+                            cardCodeAndAmount.Add(c.CardCode, c);
+                            break;
+                        }
                     }
                 }
                 if (isChampion)
@@ -148,6 +156,16 @@ public class CardManager : MonoBehaviour
             }
         }
         return c;
+    }
+
+    public List<CardCodeAndCount> GetCardsWithName(string name, TypeOfCard type)
+    {
+        List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
+        foreach(Region r in allRegions)
+        {
+            cards.AddRange(r.CardsWithName(name, type));
+        }
+        return cards;
     }
 
     //Used for saving the player's cards onto database
