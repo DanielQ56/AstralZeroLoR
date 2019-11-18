@@ -161,9 +161,10 @@ public class CardManager : MonoBehaviour
     public List<CardCodeAndCount> GetCardsWithName(string name, TypeOfCard type)
     {
         List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
+        string card = name.ToLower();
         foreach(Region r in allRegions)
         {
-            cards.AddRange(r.CardsWithName(name, type));
+            cards.AddRange(r.CardsWithName(card, type));
         }
         return cards;
     }

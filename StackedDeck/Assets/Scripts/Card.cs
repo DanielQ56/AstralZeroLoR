@@ -73,7 +73,7 @@ public class Region
         }
         for (int i = 0; i < cards.Count; ++i)
         {
-            cards[i].name = cards[i].name.Replace(",", string.Empty);
+            cards[i].name = cards[i].name.Replace(",", string.Empty).ToLower();
             if (cards[i].cardCode.Length <= 7)
             {
                 if (cards[i].type == "Spell")

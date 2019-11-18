@@ -18,6 +18,9 @@ public class UserManager : MonoBehaviour
     [SerializeField] GameObject inputPanel;
     [SerializeField] ErrorPanel error;
 
+    [SerializeField] GameObject loadingPanel;
+    [SerializeField] GameObject loadedSuccess;
+
     #region Input Fields for both Logging In and Signing Up
     [SerializeField] TMP_InputField username;
     [SerializeField] TMP_InputField password;
@@ -83,10 +86,12 @@ public class UserManager : MonoBehaviour
         {
             newUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = newUser.SendWebRequest();
+            loadingPanel.SetActive(true);
             while (!request.isDone)
             {
                 yield return null;
             }
+            loadingPanel.SetActive(false);
             if (newUser.responseCode == 500)
             {
                 ErrorOccurred("Unexpected Error Occurred");
@@ -104,7 +109,7 @@ public class UserManager : MonoBehaviour
 
     void CreateNewPlayer(string[] allCards)
     {
-        player = new PlayerData(username.text, password.text, allCards[0], allCards[1], allCards[2], allCards[3], allCards[4], allCards[5]);
+        player = new PlayerData(newUsername.text, newPassword.text, allCards[0], allCards[1], allCards[2], allCards[3], allCards[4], allCards[5]);
     }
     #endregion
 
@@ -124,10 +129,12 @@ public class UserManager : MonoBehaviour
         {
             newUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = newUser.SendWebRequest();
+            loadingPanel.SetActive(true);
             while (!request.isDone)
             {
                 yield return null;
             }
+            loadingPanel.SetActive(false);
             if (newUser.responseCode == 500)
             {
                 ErrorOccurred("Unexpected Error Occurred. Please Try Again.");
@@ -176,19 +183,29 @@ public class UserManager : MonoBehaviour
         {
             updateUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = updateUser.SendWebRequest();
+            loadingPanel.SetActive(true);
             while (!request.isDone)
             {
                 yield return null;
             }
+            loadingPanel.SetActive(false);
             if (updateUser.responseCode == 500)
             {
                 ErrorOccurred("Unexpected Error Occurred");
             }
             else
             {
+                StartCoroutine(Success());
                 Debug.Log("Updated successfully");
             }
         }
+    }
+
+    IEnumerator Success()
+    {
+        loadedSuccess.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        loadedSuccess.SetActive(false);
     }
 
     #endregion
