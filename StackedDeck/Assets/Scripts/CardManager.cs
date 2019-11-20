@@ -130,6 +130,9 @@ public class CardManager : MonoBehaviour
 
     #endregion
 
+
+    #region Updating and getting info about a certain card
+    //Called by CardPanel class I believe for updating the amount of a certain card
     public void UpdateAmountOfCard(string cardCode, int amount)
     {
         bool shouldUpdate = false;
@@ -144,6 +147,7 @@ public class CardManager : MonoBehaviour
             UserManager.instance.UpdateExistingUser();
     }
 
+    //Returns the number of copies of certain card
     public int GetNumCopiesOfCard(string cardCode)
     {
         int c = -1;
@@ -158,6 +162,8 @@ public class CardManager : MonoBehaviour
         return c;
     }
 
+
+    //Calls the function in the Card class
     public List<CardCodeAndCount> GetCardsWithName(string name, TypeOfCard type)
     {
         List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
@@ -168,6 +174,7 @@ public class CardManager : MonoBehaviour
         }
         return cards;
     }
+    #endregion
 
     //Used for saving the player's cards onto database
     public string[] GetAllCardsAsStrings()

@@ -16,6 +16,9 @@ public class InputManager : MonoBehaviour
     [SerializeField] CardPanel panel;
     [SerializeField] GameObject update;
 
+    [SerializeField] LoadDecks deckLoader;
+    [SerializeField] TMP_InputField deckName;
+    [SerializeField] GameObject SaveDeckPanel;
     string r1 = "";
     string r2 = "";
 
@@ -117,6 +120,50 @@ public class InputManager : MonoBehaviour
     }
     #endregion
 
+    #region Loading previously saved decks
+    public void LoadSavedDecks(List<string> cardDecks)
+    {
+        deckLoader.SetupLoadedDecks(cardDecks);
+    }
+
+    public void LoadDeck(string[] info)
+    {
+        ClearAllEntries();
+        cards.AddRange(LoRDeckEncoder.GetDeckFromCode(info[0]));
+        deckCode.text = info[0];
+        RegionOne(info[1]);
+        RegionTwo(info[2]);
+        numInRegion1.text = info[3];
+    }
+
+    public void SaveDeck()
+    {
+        if (deckCode.text.Length > 0)
+        {
+            SaveDeckPanel.SetActive(true);
+            string name = "";
+            if (deckName.text.Length == 0)
+            {
+                deckName.text = "NewDeck";
+            }
+            name += deckName.text;
+            while(name.Length < 20)
+            {
+                name += ',';
+            }
+            int numR1, numR2;
+            int.TryParse(numInRegion1.text, out numR1);
+            numR2 = 40 - numR1;
+            string deckstring = deckCode.text + Utilities.RegionToIndex[r1] + Utilities.RegionToIndex[r2] + (numR1 < 10 ? "0" + numR1.ToString() : numR1.ToString()) + (numR2 < 10 ? "0" + numR2.ToString() : numR2.ToString()) + name;
+            deckLoader.SaveDeck(deckstring);
+        }
+        
+    }
+
+    #endregion
+
+
+    #region OtherMethods
     //Function called when the View deck button is pressed. Preps all the cards that were generated
     public void DisplayCardsInDeck()
     {
@@ -127,6 +174,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    //Emptying every query 
     public void ClearAllEntries()
     {
         r1 = "";
@@ -136,8 +184,11 @@ public class InputManager : MonoBehaviour
         numInRegion1.text = "";
         numInRegion2.text = "";
         deckCode.text = "";
+        cards.Clear();
     }
 
+
+    //self-explanatory; called by user manager I believe
     public void ShouldAllowUpdate()
     {
         if(UserManager.instance.player == null)
@@ -151,9 +202,13 @@ public class InputManager : MonoBehaviour
     }
 
 
+
     //Function that copies the deck code to clipboard for easy copy paste
     public void CopyToClipBoard()
     {
         Utilities.CopyToClipBoard(deckCode.text);
     }
+
+    #endregion
 }
+

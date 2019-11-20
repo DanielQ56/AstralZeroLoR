@@ -35,6 +35,7 @@ public class UserManager : MonoBehaviour
         instance = this;
     }
 
+    //Guest so player is null and tells input manager that the player should not be able to update the amount of cards
     public void Guest()
     {
         ResetInput();
@@ -75,14 +76,8 @@ public class UserManager : MonoBehaviour
         }
         CardManager.instance.LoadAllCards();
         string[] allCards = CardManager.instance.GetAllCardsAsStrings();
-        WWWForm form = new WWWForm();
-        form.AddField("id", newUsername.text);
-        form.AddField("password", newPassword.text);
-        for (int i = 0; i < allCards.Length; ++i)
-        {
-            form.AddField("r" + (i + 1).ToString(), allCards[i]);
-        }
-        using (UnityWebRequest newUser = UnityWebRequest.Post(RegisterNewUser, form))
+        CreateNewPlayer(allCards);
+        using (UnityWebRequest newUser = UnityWebRequest.Post(RegisterNewUser, CreatePlayerForm(allCards, newUsername.text, newPassword.text)))
         {
             newUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = newUser.SendWebRequest();
@@ -99,7 +94,6 @@ public class UserManager : MonoBehaviour
             else
             {
                 Debug.Log("User Created Succesfully!");
-                CreateNewPlayer(allCards);
                 ResetInput();
                 InputManager.instance.ShouldAllowUpdate();
                 inputPanel.SetActive(false);
@@ -172,14 +166,8 @@ public class UserManager : MonoBehaviour
     IEnumerator update()
     {
         string[] allCards = CardManager.instance.GetAllCardsAsStrings();
-        WWWForm form = new WWWForm();
-        form.AddField("id", player.id);
-        form.AddField("password", player.password);
-        for (int i = 0; i < allCards.Length; ++i)
-        {
-            form.AddField("r" + (i + 1).ToString(), allCards[i]);
-        }
-        using (UnityWebRequest updateUser = UnityWebRequest.Post(UpdateUser, form))
+        
+        using (UnityWebRequest updateUser = UnityWebRequest.Post(UpdateUser, CreatePlayerForm(allCards, player.id, player.password)))
         {
             updateUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = updateUser.SendWebRequest();
@@ -204,20 +192,25 @@ public class UserManager : MonoBehaviour
     IEnumerator Success()
     {
         loadedSuccess.SetActive(true);
+        SendLoadedDecks();
         yield return new WaitForSeconds(1.5f);
         loadedSuccess.SetActive(false);
     }
 
-    #endregion
-
-    public void BackToMenu()
+    public void UpdateSavedDecks(List<string> deckstrings)
     {
-        InputManager.instance.ClearAllEntries();
-        inputPanel.SetActive(true);
-        player = null;
+        player.d1 = deckstrings[0];
+        player.d2 = deckstrings[1];
+        player.d3 = deckstrings[2];
+        UpdateExistingUser();
     }
 
+    #endregion
+
+
     #region Helper Functions
+
+    //This checks the input of Username, Password the two input fields on the menu
     bool CheckForEmptyInput(TMP_InputField user, TMP_InputField pass)
     {
         if (user.text == "" || pass.text == "")
@@ -228,6 +221,8 @@ public class UserManager : MonoBehaviour
         return false;
     }
 
+
+    //Function that is called if the response status from webrequest is 500
     void ErrorOccurred(string text)
     {
         error.gameObject.SetActive(true);
@@ -235,12 +230,43 @@ public class UserManager : MonoBehaviour
         ResetInput();
     }
 
+    //Empties the input fields
     void ResetInput()
     {
         username.text = "";
         password.text = "";
         newUsername.text = "";
         newPassword.text = "";
+    }
+
+
+    //Opens the login panel again
+    public void BackToMenu()
+    {
+        InputManager.instance.ClearAllEntries();
+        inputPanel.SetActive(true);
+        player = null;
+    }
+
+    public void SendLoadedDecks()
+    {
+        List<string> decks = new List<string> { player.d1, player.d2, player.d3 };
+        InputManager.instance.LoadSavedDecks(decks);
+    }
+
+    WWWForm CreatePlayerForm(string[] allCards, string id, string password)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("id", id);
+        form.AddField("password", password);
+        for (int i = 0; i < allCards.Length; ++i)
+        {
+            form.AddField("r" + (i + 1).ToString(), allCards[i]);
+        }
+        form.AddField("d1", player.d1);
+        form.AddField("d2", player.d2);
+        form.AddField("d3", player.d3);
+        return form;
     }
     #endregion
 }

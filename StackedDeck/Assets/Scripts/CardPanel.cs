@@ -28,6 +28,7 @@ public class CardPanel : MonoBehaviour
         instance = this;
     }
 
+    //Called after this object has been enabled, sets up the entire grid of cards for display
     public void Setup(List<CardCodeAndCount> cards)
     {
         currentIndex = 0;
@@ -62,6 +63,7 @@ public class CardPanel : MonoBehaviour
         Debug.Log(currentIndex);
     }
 
+    //Only called when searching for a certain card via the UpdateCard button. It just loads the next set of cards to display
     public void NextSetOfCards()
     { 
         CardCodeAndCount c;
@@ -88,6 +90,7 @@ public class CardPanel : MonoBehaviour
         Debug.Log(currentIndex);
     }
 
+    //Retrieves the earlier set of cards
     public void PreviousSetOfCards()
     {
         CardCodeAndCount c;
@@ -115,12 +118,15 @@ public class CardPanel : MonoBehaviour
         rightButton.interactable = true;
     }
 
+
+    //Zooms in on a certain card
     public void ZoomIn(Sprite s, string cardCode)
     {
         zoom.gameObject.SetActive(true);
         zoom.SetImage(s, cardCode);
     }
 
+    //Sends it to the cardmanager to update an amount of a card
     public void UpdateAmountOfCard(int amount, string cardCode)
     {
         CardManager.instance.UpdateAmountOfCard(cardCode, amount);

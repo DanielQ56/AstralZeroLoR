@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 using LoRDeckCodes;
 
+
+//Enum used for updating a card
 [System.Serializable] 
 public enum TypeOfCard
 {
@@ -24,8 +26,11 @@ public class PlayerData
     public string r4;
     public string r5;
     public string r6;
+    public string d1;
+    public string d2;
+    public string d3;
 
-    public PlayerData(string i, string pass, string R1, string R2, string R3, string R4, string R5, string R6)
+    public PlayerData(string i, string pass, string R1, string R2, string R3, string R4, string R5, string R6, string D1 = "", string D2 = "", string D3 = "")
     {
         id = i;
         password = pass;
@@ -35,6 +40,9 @@ public class PlayerData
         r4 = R4;
         r5 = R5;
         r6 = R6;
+        d1 = D1;
+        d2 = D2;
+        d3 = D3;
     }
 }
 
@@ -196,6 +204,8 @@ public class Region
         return false;
     }
 
+
+    //Returns the number of a certain card
     public int NumCopiesOfCard(string code)
     {
         if (CardCodeToName.ContainsKey(code))
@@ -208,6 +218,7 @@ public class Region
         return -1;
     }
 
+    //Returns a list of cards that have the input string within the name
     public List<CardCodeAndCount> CardsWithName(string name, TypeOfCard type)
     {
         List<CardCodeAndCount> cards = new List<CardCodeAndCount>();
