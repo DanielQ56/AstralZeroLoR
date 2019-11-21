@@ -205,8 +205,14 @@ public class InputManager : MonoBehaviour
         numInRegion2.text = "";
         deckCode.text = "";
         cards.Clear();
+        panel.ClosePanel();
+        deckLoader.CloseAllPanels();
     }
 
+    void CloseAllOpenPanels()
+    {
+
+    }
 
     //self-explanatory; called by user manager I believe
     public void ShouldAllowUpdate()

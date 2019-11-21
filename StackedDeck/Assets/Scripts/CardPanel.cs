@@ -131,4 +131,9 @@ public class CardPanel : MonoBehaviour
     {
         CardManager.instance.UpdateAmountOfCard(cardCode, amount);
     }
+
+    public void ClosePanel()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

@@ -8,6 +8,8 @@ using TMPro;
 public class LoadDecks : MonoBehaviour
 {
     [SerializeField] List<ToggleDescriptions> toggles;
+    [SerializeField] GameObject LoadPanel;
+    [SerializeField] GameObject SavePanel;
 
     string newDeckString;
 
@@ -101,6 +103,12 @@ public class LoadDecks : MonoBehaviour
     {
         isSaving = false;
         newDeckString = "";
+    }
+
+    public void CloseAllPanels()
+    {
+        SavePanel.SetActive(false);
+        LoadPanel.SetActive(false);
     }
 
 
