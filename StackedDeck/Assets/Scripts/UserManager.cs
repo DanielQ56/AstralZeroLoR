@@ -33,6 +33,7 @@ public class UserManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        LoadJson.DeleteCardsOnPath();
     }
 
     //Guest so player is null and tells input manager that the player should not be able to update the amount of cards

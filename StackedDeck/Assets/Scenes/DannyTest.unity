@@ -13076,6 +13076,8 @@ MonoBehaviour:
   deckLoader: {fileID: 1939922041}
   deckName: {fileID: 1803152327}
   SaveDeckPanel: {fileID: 1968042668}
+  SaveButton: {fileID: 1978565748}
+  LoadButton: {fileID: 1042052075}
 --- !u!4 &880965689
 Transform:
   m_ObjectHideFlags: 0

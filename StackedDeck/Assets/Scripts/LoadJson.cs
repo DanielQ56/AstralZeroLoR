@@ -148,9 +148,11 @@ public class LoadJson
     //Deletes the data file we stored cards on
     public static void DeleteCardsOnPath()
     {
+        Debug.Log("testing for deleting");
         string p = Application.persistentDataPath + path;
         if(File.Exists(p))
         {
+            Debug.Log("deleting");
             File.Delete(p);
         }
     }

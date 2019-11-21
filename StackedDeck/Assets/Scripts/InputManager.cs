@@ -8,17 +8,26 @@ using LoRDeckCodes;
 public class InputManager : MonoBehaviour
 {
     public static InputManager instance = null;
+    #region InputQueries
     [SerializeField] TMP_InputField numInRegion1;
     [SerializeField] TMP_InputField numInRegion2;
     [SerializeField] TextMeshProUGUI region1;
     [SerializeField] TextMeshProUGUI region2;
     [SerializeField] TextMeshProUGUI deckCode;
+    #endregion
+
+
+
     [SerializeField] CardPanel panel;
     [SerializeField] GameObject update;
-
+    
+    #region LoadingDeckObjects
     [SerializeField] LoadDecks deckLoader;
     [SerializeField] TMP_InputField deckName;
     [SerializeField] GameObject SaveDeckPanel;
+    [SerializeField] GameObject SaveButton;
+    [SerializeField] GameObject LoadButton;
+    #endregion
     string r1 = "";
     string r2 = "";
 
@@ -205,10 +214,14 @@ public class InputManager : MonoBehaviour
         if(UserManager.instance.player == null)
         {
             update.SetActive(false);
+            LoadButton.SetActive(false);
+            SaveButton.SetActive(false);
         }
         else
         {
             update.SetActive(true);
+            SaveButton.SetActive(true);
+            LoadButton.SetActive(true);
         }
     }
 

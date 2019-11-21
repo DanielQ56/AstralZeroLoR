@@ -74,6 +74,7 @@ public class Region
     //Constructor
     public Region(string n, List<Card> cards, string cardsWithCount = "")
     {
+        Debug.Log("\"" + cardsWithCount + "\"");
         bool loadPlayerData = (cardsWithCount != "");
         if(loadPlayerData)
         {
@@ -100,10 +101,10 @@ public class Region
                         units.Add(cards[i]);
                     }
                 }
+                CardCodeToName.Add(cards[i].cardCode, cards[i].name);
+                if (!loadPlayerData)
+                    CountOfAllCards.Add(cards[i].name, 3);
             }
-            CardCodeToName.Add(cards[i].cardCode, cards[i].name);
-            if(!loadPlayerData)
-                CountOfAllCards.Add(cards[i].name, 3);
         }
         
     }
