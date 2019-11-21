@@ -121,9 +121,9 @@ public class InputManager : MonoBehaviour
     #endregion
 
     #region Loading previously saved decks
-    public void LoadSavedDecks(List<string> cardDecks)
+    public void LoadSavedDecks()
     {
-        deckLoader.SetupLoadedDecks(cardDecks);
+        deckLoader.SetupLoadedDecks(UserManager.instance.GetLoadedDecks());
     }
 
     public void LoadDeck(string[] info)
@@ -136,11 +136,22 @@ public class InputManager : MonoBehaviour
         numInRegion1.text = info[3];
     }
 
+    public void OpenSavePanel()
+    {
+        if(deckCode.text.Length > 0)
+        {
+            SaveDeckPanel.SetActive(true);
+        }
+        else
+        {
+            SaveDeckPanel.SetActive(false);
+        }
+    }
+
     public void SaveDeck()
     {
         if (deckCode.text.Length > 0)
         {
-            SaveDeckPanel.SetActive(true);
             string name = "";
             if (deckName.text.Length == 0)
             {

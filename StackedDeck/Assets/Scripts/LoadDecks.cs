@@ -94,7 +94,7 @@ public class LoadDecks : MonoBehaviour
     {
         isSaving = true;
         newDeckString = deckstring;
-        GetLoadedDecks();
+        InputManager.instance.LoadSavedDecks();
     }
 
     public void ExitedPanel()
@@ -103,10 +103,6 @@ public class LoadDecks : MonoBehaviour
         newDeckString = "";
     }
 
-    public void GetLoadedDecks()
-    {
-        UserManager.instance.SendLoadedDecks();
-    }
 
     
 

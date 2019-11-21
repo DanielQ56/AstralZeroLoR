@@ -192,7 +192,7 @@ public class UserManager : MonoBehaviour
     IEnumerator Success()
     {
         loadedSuccess.SetActive(true);
-        SendLoadedDecks();
+        InputManager.instance.LoadSavedDecks();
         yield return new WaitForSeconds(1.5f);
         loadedSuccess.SetActive(false);
     }
@@ -248,10 +248,10 @@ public class UserManager : MonoBehaviour
         player = null;
     }
 
-    public void SendLoadedDecks()
+    public List<string> GetLoadedDecks()
     {
         List<string> decks = new List<string> { player.d1, player.d2, player.d3 };
-        InputManager.instance.LoadSavedDecks(decks);
+        return decks;
     }
 
     WWWForm CreatePlayerForm(string[] allCards, string id, string password)
