@@ -49,6 +49,7 @@ public class InputManager : MonoBehaviour
     public void ClearAndCloseAll()
     {
         queries.ClearAllEntries();
+        queries.DeleteLoadedDecks();
         random.ClearQuery();
     }
 

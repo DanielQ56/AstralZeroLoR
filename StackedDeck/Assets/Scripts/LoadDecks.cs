@@ -124,7 +124,7 @@ public class LoadDecks : MonoBehaviour
     {
         isSaving = false;
         newDeckString = "";
-        foreach(ToggleDescriptions t in toggles)
+        foreach (ToggleDescriptions t in toggles)
         {
             t.ClearDetails();
         }
@@ -133,9 +133,16 @@ public class LoadDecks : MonoBehaviour
 
     public void CloseAllPanels()
     {
-        SavePanel.SetActive(false);
-        LoadPanel.SetActive(false);
         ExitedPanel();
+        SavePanel.SetActive(false);
+    }
+
+    public void DeleteLoadedDecks()
+    {
+        foreach(ToggleDescriptions t in toggles)
+        {
+            Debug.Log(t.GetDeckAsString());
+        }
     }
 
 

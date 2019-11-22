@@ -78,6 +78,7 @@ public class ToggleDescriptions : MonoBehaviour
     {
         deckName.text = "";
         deckDetails.text = "";
+        hasDeck = false;
     }
 
 }

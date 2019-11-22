@@ -177,6 +177,10 @@ public class Queries : MonoBehaviour
         numInRegion2.text = "";
         deckCode.text = "";
         cards.Clear();
+    }
+
+    public void DeleteLoadedDecks()
+    {
         load.CloseAllPanels();
     }
 
