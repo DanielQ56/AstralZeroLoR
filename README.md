@@ -1,6 +1,6 @@
 # AstralZeroLoR
 Project Name: Stacked Deck <br />
-Link: <br />
+Link: https://timothyquach.itch.io/stacked-deck <br />
 
 Sadly WebGL does not support copy/pasting yet and we didn't have the time to implement a workaround. Additionally WebGL wasn't connecting to our server properly, one of the main features of our application, so on the itch we have attached the zip folder. After extracting the zip folder, there is an executable file called StackedDeck.exe which you can then run. Sorry for the inconvenience and thanks for checking out our application!<br />
 
