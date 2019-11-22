@@ -2212,7 +2212,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880965688}
+      - m_Target: {fileID: 241908210}
         m_MethodName: CopyToClipBoard
         m_Mode: 1
         m_Arguments:
@@ -3774,7 +3774,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Load
+  m_text: 'Submit
 
 '
   m_isRightToLeft: 0
@@ -32748,7 +32748,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 880965688}
+      - m_Target: {fileID: 241908210}
         m_MethodName: CopyToClipBoard
         m_Mode: 1
         m_Arguments:
