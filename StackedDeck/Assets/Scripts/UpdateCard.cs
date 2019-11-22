@@ -28,6 +28,12 @@ public class UpdateCard : MonoBehaviour
         {
             cardPanel.gameObject.SetActive(true);
             cardPanel.Setup(cards);
+            input.text = "";
         }
+    }
+
+    public void ClearText()
+    {
+        input.text = "";
     }
 }

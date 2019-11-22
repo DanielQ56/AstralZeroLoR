@@ -34,7 +34,6 @@ public class CardPanel : MonoBehaviour
         currentIndex = 0;
         CardCodeAndCount c;
         currentCards = cards;
-        Debug.Log(cards.Count);
         foreach (Transform t in cardPanel.transform)
         {
             if (currentIndex < cards.Count)
@@ -49,18 +48,20 @@ public class CardPanel : MonoBehaviour
             }
             currentIndex += 1;
         }
+        Debug.Log(cards.Count);
         if(cards.Count > 27)
         {
+            Debug.Log("More cards on next page");
             leftButton.gameObject.SetActive(true);
             leftButton.interactable = false;
             rightButton.gameObject.SetActive(true);
+            rightButton.interactable = true;
         }
         else
         {
             leftButton.gameObject.SetActive(false);
             rightButton.gameObject.SetActive(false);
         }
-        Debug.Log(currentIndex);
     }
 
     //Only called when searching for a certain card via the UpdateCard button. It just loads the next set of cards to display
