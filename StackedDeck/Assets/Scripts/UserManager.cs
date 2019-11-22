@@ -60,10 +60,7 @@ public class UserManager : MonoBehaviour
         {
             newUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = newUser.SendWebRequest();
-            while (!request.isDone)
-            {
-                yield return null;
-            }
+            yield return request;
             if (newUser.responseCode == 500)
             {
                 ErrorOccurred("Unexpected Error Occurred. Please Try Again.");
@@ -83,10 +80,7 @@ public class UserManager : MonoBehaviour
             newUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = newUser.SendWebRequest();
             loadingPanel.SetActive(true);
-            while (!request.isDone)
-            {
-                yield return null;
-            }
+            yield return request;
             loadingPanel.SetActive(false);
             if (newUser.responseCode == 500)
             {
@@ -125,10 +119,7 @@ public class UserManager : MonoBehaviour
             newUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = newUser.SendWebRequest();
             loadingPanel.SetActive(true);
-            while (!request.isDone)
-            {
-                yield return null;
-            }
+            yield return request;
             loadingPanel.SetActive(false);
             if (newUser.responseCode == 500)
             {
@@ -173,10 +164,7 @@ public class UserManager : MonoBehaviour
             updateUser.chunkedTransfer = false;
             UnityWebRequestAsyncOperation request = updateUser.SendWebRequest();
             loadingPanel.SetActive(true);
-            while (!request.isDone)
-            {
-                yield return null;
-            }
+            yield return request;
             loadingPanel.SetActive(false);
             if (updateUser.responseCode == 500)
             {
@@ -268,5 +256,11 @@ public class UserManager : MonoBehaviour
         form.AddField("d3", player.d3);
         return form;
     }
+
+    public void Close()
+    {
+        Application.Quit();
+    }
+ 
     #endregion
 }
