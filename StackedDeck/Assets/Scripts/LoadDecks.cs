@@ -117,6 +117,7 @@ public class LoadDecks : MonoBehaviour
         isSaving = true;
         newDeckString += name;
         LoadSavedDecks();
+        newDeck.text = "NewDeck";
         SavePanel.SetActive(false);
     }
 
