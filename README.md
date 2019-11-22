@@ -56,7 +56,7 @@ Languages used: <br />
 Created by:<br />
 &nbsp; &nbsp; &nbsp; •Daniel Qi, Chef BoyarQi, Computer Game Science/Computer Science, Junior, UCI<br />
 &nbsp; &nbsp; &nbsp; •Timothy Quach, tworii, Computer Game Science, Junior, UCI<br />
-&nbsp; &nbsp; &nbsp; •Jonathan Chhou, Ripof, Data Science, Junior, UCI<br />
+&nbsp; &nbsp; &nbsp; •Jonathan Chhou, Ripof, Informatics, Junior, UCI<br />
 
 Thanks for using our application!<br />
 
