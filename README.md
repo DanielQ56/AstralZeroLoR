@@ -26,27 +26,30 @@ Deck Generation:
 		Press the Advanced button in the top right corner to set your own queries. 
 		Upon entering the desired regions press Generate to generate the deck. 
 		Users are also able to press the Randomize button to have completely random queries.
-        
-Additional Features: 
-	View Deck:
-		Allows the user to see the cards in the deck they generated allow with how many copies of each card are in the deck.
-	Copy to Clipboard: 
-		The clipboard button allows players to easily copy the deck code and paste it into LoR client.
-	(THE FOLLOWING FEATURES ARE FOR LOGGED IN USERS ONLY)
-	Update: 
-		The update button in the bottom left hand corner allows users to search for a certain card by its name and type.
-		Click on a certain card to zoom in and press the arrows on either side to bring up panels: 
-			Left: 
-				Shows the user how many copies of that card they currently have.
-			Right: (Will only be available for logged in users)
-				Allows the user to input how many copies of that card they have. (input must be between 0 and 3)
-	Load: 
-		Brings up decks that the user had previously saved. (saves up to 3 decks)
-		Displays the deck name, regions, and number of cards per region in the deck.
-	Save: 
-		Save the currently generated deck onto a certain slot.
-		Allows users to name the deck for better identification.
-		*WARNING: will override the deck currently in that slot*
+
+Additional Features
+
+View Deck
+	Allows the user to see the cards in the deck they generated allow with how many copies of each card are in the deck.
+Copy to Clipboard
+    The clipboard button allows players to easily copy the deck code and paste it into LoR client.
+(THE FOLLOWING FEATURES ARE FOR LOGGED IN USERS ONLY)
+Update
+    The update button in the bottom left hand corner allows users to search for a certain card by its name and type.
+    Click on a certain card to zoom in and press the arrows on either side to bring up panels
+		Left
+			Shows the user how many copies of that card they currently have.
+		Right: (Will only be available for logged in users)
+			Allows the user to input how many copies of that card they have. (input must be between 0 and 3)
+
+Load: 
+	Brings up decks that the user had previously saved. (saves up to 3 decks)
+	Displays the deck name, regions, and number of cards per region in the deck.
+
+Save: 
+	Save the currently generated deck onto a certain slot. \n
+	Allows users to name the deck for better identification.
+	*WARNING: will override the deck currently in that slot*
 
 
 Languages used: 
