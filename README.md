@@ -32,12 +32,11 @@ Additional Features<br />
 (THE FOLLOWING FEATURES ARE FOR LOGGED IN USERS ONLY)<br />
 &nbsp; &nbsp; &nbsp; •Update:<br />
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •The update button in the bottom left hand corner allows users to search for a certain card by its name and type.<br />
-&nbsp; &nbsp; &nbsp; •Zoom In On Card<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •When viewing the deck or searching up a card, Users can click on a card to zoom in. The buttons on both sides will bring up two different panels.<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Left:<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  •Shows the user how many copies of that card they currently have.<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Right: (Will only be available for users who are logged in)<br />
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Allows the user to input how many copies of that card they have. (input must be between 0 and 3)<br />
+&nbsp; &nbsp; &nbsp; •Click on a certain card to zoom in and press the arrows on either side to bring up panels.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Left:<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Shows the user how many copies of that card they currently have.<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Right: (Will only be available for logged in users)<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Allows the user to input how many copies of that card they have. (input must be between 0 and 3)<br />
 &nbsp; &nbsp; &nbsp; •Load: <br />
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Brings up decks that the user had previously saved. (saves up to 3 decks)<br />
 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; •Displays the deck name, regions, and number of cards per region in the deck.<br />

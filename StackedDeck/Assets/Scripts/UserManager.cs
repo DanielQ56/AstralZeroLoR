@@ -231,7 +231,7 @@ public class UserManager : MonoBehaviour
     }
 
     //Empties the input fields
-    void ResetInput()
+    public void ResetInput()
     {
         username.text = "";
         password.text = "";

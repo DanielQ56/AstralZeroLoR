@@ -74,4 +74,10 @@ public class ToggleDescriptions : MonoBehaviour
 
     }
 
+    public void ClearDetails()
+    {
+        deckName.text = "";
+        deckDetails.text = "";
+    }
+
 }
