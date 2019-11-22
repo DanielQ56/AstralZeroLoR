@@ -33,7 +33,7 @@ public class UserManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        LoadJson.DeleteCardsOnPath();
+        //LoadJson.DeleteCardsOnPath();
     }
 
     //Guest so player is null and tells input manager that the player should not be able to update the amount of cards
@@ -193,7 +193,6 @@ public class UserManager : MonoBehaviour
     IEnumerator Success()
     {
         loadedSuccess.SetActive(true);
-        InputManager.instance.LoadSavedDecks();
         yield return new WaitForSeconds(1.5f);
         loadedSuccess.SetActive(false);
     }
@@ -244,7 +243,7 @@ public class UserManager : MonoBehaviour
     //Opens the login panel again
     public void BackToMenu()
     {
-        InputManager.instance.ClearAllEntries();
+        InputManager.instance.ClearAndCloseAll();
         inputPanel.SetActive(true);
         player = null;
     }
