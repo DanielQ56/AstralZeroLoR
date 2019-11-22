@@ -1,6 +1,8 @@
 # AstralZeroLoR
 Project Name: Stacked Deck <br />
-Link: <br />
+Link: https://timothyquach.itch.io/stacked-deck <br />
+
+Sadly WebGL does not support copy/pasting yet and we didn't have the time to implement a workaround. Additionally WebGL wasn't connecting to our server properly, one of the main features of our application, so on the itch.io page we have attached the zip folder, which you can download and extract. After extracting the zip folder, there is an executable file called StackedDeck.exe which you can then run. We apologize for the inconvenience and thanks for checking out our application!<br />
 
 Stacked Deck is a third party app that is used to generate a Randomized Deck for users to use in Legends of Runeterra.<br />
 
